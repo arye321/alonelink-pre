@@ -4,18 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Submission</title>
+    <style>
+        #loading {
+            display: none;
+            font-weight: bold;
+        
+        }
+        #copyButton {
+            display: none;
+        }
+        #checkMark {
+            display: none;
+            color: green;
+            font-size: 1.5em;
+        }
+    </style>
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function copyToClipboard() {
+            const linkText = document.getElementById('submittedLink').textContent;
+            const tempInput = document.createElement('input');
+            tempInput.value = linkText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            document.getElementById('checkMark').style.display = 'inline';
+        }
+    </script>
 </head>
 <body>
     <h1>Submit a Link</h1>
-    <form method="POST">
+    <form method="POST" onsubmit="showLoading()">
         <label for="link">Enter Link:</label>
-        <input type="text" id="link" name="link">
+        <input type="text" id="link" name="link" required>
         <button type="submit">Submit</button>
     </form>
 
+    <p id="loading">Loading...</p>
+
     {% if link %}
         <h2>Submitted Link:</h2>
-        <p>{{ link }}</p>
+        <p id="submittedLink">{{ link }}</p>
+        <button id="copyButton" onclick="copyToClipboard()">Copy link</button>
+        <span id="checkMark">✔️</span>
+        <script>
+            document.getElementById('copyButton').style.display = 'block';
+        </script>
     {% endif %}
 </body>
 </html>
