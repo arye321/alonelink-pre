@@ -14,5 +14,7 @@ def index():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(submitted_link, download=False)
             streamlink = ydl.sanitize_info(info)['formats'][0]['manifest_url']
+            if ",en_commentary" in streamlink:
+                streamlink= streamlink.replace(',en_commentary','')
     return render_template('index.html', link=streamlink)
 
